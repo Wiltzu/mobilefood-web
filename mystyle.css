@@ -1,0 +1,39 @@
+body {
+	background: #e8e8e8;
+}
+
+.item {
+	background: white;
+	box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.33);
+	border-radius: 3px;
+	color: #333;
+	border: none;
+	width: 94%;
+	min-height: 150px;
+}
+
+ul {
+	padding-bottom: 2%;
+}
+
+h2 {
+	margin-left: 3%;
+}
+
+#container {
+	
+	width: 100%;
+	margin 0;
+}
+
+@media (min-width: 480px) {
+	.item {
+		width: 320px;
+	}
+
+	#container {
+	   width: 80%;
+	   margin: auto;
+	}
+}
+
