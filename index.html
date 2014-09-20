@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-<!-- saved from url=(0065)http://vnjs.net/www/project/freewall/example/getting-started.html -->
 <html>
 	<head>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title> freewall demo getting started</title>
-		<script src="./index_files/jquery-1.10.2.min.js"></script>
+		<script src="./bower_components/jquery/dist/jquery.min.js"></script>
 		<script src="./bower_components/freewall/freewall.js"></script>
 		<link rel="stylesheet" type="text/css" href="styles.css">  
 	</head>
@@ -14,7 +13,7 @@
 			<h2>Assarin Ullakko</h2>
 			<ul>
 				<li>Makaroonilaatikko</li>
-				<li>Muusi ja Nakit</li>
+				<li>Muusi ja nakit</li>
 				<li>Janssoninkiusaus</li>
 			</ul>
 		</div>
@@ -50,10 +49,28 @@
 				<li>Lorem ipsum dolor.</li>
 			</ul>
 		</div>
+		<div class="item">
+			<h2>Tottisalmi</h2>
+			<ul>
+				<li>Lorem ipsum dolor.</li>
+				<li>Lorem ipsum dolor.</li>
+				<li>Lorem ipsum dolor.</li>
+				<li>Lorem ipsum dolor.</li>
+			</ul>
+		</div>
 	  </div>
 	  <script>
 		$(function() {
 		  var wall = new freewall("#container");
+		  
+		  wall.reset({
+		  	selector: '.item',
+		  	cellH: 'auto',		  	
+		  	onResize: function() {
+		  		wall.fitWidth($(window).width());
+		  	}
+		  });
+
 		  wall.fitWidth();
 		});
 	  </script>
