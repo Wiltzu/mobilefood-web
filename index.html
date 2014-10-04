@@ -1,79 +1,106 @@
 <!DOCTYPE html>
 <html>
 	<head>
+        <meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title> freewall demo getting started</title>
-		<script src="./bower_components/jquery/dist/jquery.min.js"></script>
-		<script src="./bower_components/freewall/freewall.js"></script>
-		<link rel="stylesheet" type="text/css" href="styles.css">  
+
+        <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css"/>
+		<link rel="stylesheet" href="styles.css">
 	</head>
 	<body style="">
-	  <div id="container">
-		<div class="item">
-			<h2>Assarin Ullakko</h2>
-			<ul>
-				<li>Makaroonilaatikko</li>
-				<li>Muusi ja nakit</li>
-				<li>Janssoninkiusaus</li>
-			</ul>
-		</div>
-		<div class="item">
-			<h2>Delica</h2>
-			<ul>
-				<li>Lorem ipsum dolor.</li>
-				<li>Lorem ipsum dolor.</li>
-				<li>Lorem ipsum dolor.</li>
-			</ul>
-		</div>
-		<div class="item">
-			<h2>Dental</h2>
-			<ul>
-				<li>Lorem ipsum.</li>
-				<li>Lorem ipsum.</li>
-				<li>Lorem ipsum.</li>
-			</ul>
-		</div>
-		<div class="item">
-			<h2>Deli Pharma</h2>
-			<ul>
-				<li>Lorem ipsum dolor sit.</li>
-				<li>Lorem ipsum dolor sit.</li>
-			</ul>
-		</div>
-		<div class="item">
-			<h2>Tottisalmi</h2>
-			<ul>
-				<li>Lorem ipsum dolor.</li>
-				<li>Lorem ipsum dolor.</li>
-				<li>Lorem ipsum dolor.</li>
-				<li>Lorem ipsum dolor.</li>
-			</ul>
-		</div>
-		<div class="item">
-			<h2>Tottisalmi</h2>
-			<ul>
-				<li>Lorem ipsum dolor.</li>
-				<li>Lorem ipsum dolor.</li>
-				<li>Lorem ipsum dolor.</li>
-				<li>Lorem ipsum dolor.</li>
-			</ul>
-		</div>
-	  </div>
-	  <script>
-		$(function() {
-		  var wall = new freewall("#container");
-		  
-		  wall.reset({
-		  	selector: '.item',
-		  	cellH: 'auto',		  	
-		  	onResize: function() {
-		  		wall.fitWidth($(window).width());
-		  	}
-		  });
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a href="#" class="navbar-brand">Kokeilu</a>
+                    <button type="button" class="navbar-toggle  collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="about.html">About</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
 
-		  wall.fitWidth();
-		});
-	  </script>
+        <div class="container-fluid">
+          <div id="container">
+            <div class="item">
+                <h2>Assarin Ullakko</h2>
+                <ul>
+                    <li>Makaroonilaatikko</li>
+                    <li>Muusi ja nakit</li>
+                    <li>Janssoninkiusaus</li>
+                </ul>
+            </div>
+            <div class="item">
+                <h2>Delica</h2>
+                <ul>
+                    <li>Lorem ipsum dolor.</li>
+                    <li>Lorem ipsum dolor.</li>
+                    <li>Lorem ipsum dolor.</li>
+                </ul>
+            </div>
+            <div class="item">
+                <h2>Dental</h2>
+                <ul>
+                    <li>Lorem ipsum.</li>
+                    <li>Lorem ipsum.</li>
+                    <li>Lorem ipsum.</li>
+                </ul>
+            </div>
+            <div class="item">
+                <h2>Deli Pharma</h2>
+                <ul>
+                    <li>Lorem ipsum dolor sit.</li>
+                    <li>Lorem ipsum dolor sit.</li>
+                </ul>
+            </div>
+            <div class="item">
+                <h2>Tottisalmi</h2>
+                <ul>
+                    <li>Lorem ipsum dolor.</li>
+                    <li>Lorem ipsum dolor.</li>
+                    <li>Lorem ipsum dolor.</li>
+                    <li>Lorem ipsum dolor.</li>
+                </ul>
+            </div>
+            <div class="item">
+                <h2>Tottisalmi</h2>
+                <ul>
+                    <li>Lorem ipsum dolor.</li>
+                    <li>Lorem ipsum dolor.</li>
+                    <li>Lorem ipsum dolor.</li>
+                    <li>Lorem ipsum dolor.</li>
+                </ul>
+            </div>
+          </div>
+        </div>
+
+        <script src="./bower_components/jquery/dist/jquery.min.js"></script>
+        <script src="./bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="./bower_components/freewall/freewall.js"></script>
+        <script>
+            $(function() {
+                var wall = new freewall("#container");
+
+                wall.reset({
+                    selector: '.item',
+                    cellH: 'auto',
+                    onResize: function() {
+                        wall.fitWidth($(window).width());
+                    }
+                });
+
+                wall.fitWidth();
+            });
+        </script>
 
 	</body>
 </html>
