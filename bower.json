@@ -19,6 +19,8 @@
   ],
   "dependencies": {
     "freewall": "~1.0.4",
-    "bootstrap": "~3.2.0"
+    "bootstrap": "~3.2.0",
+    "fullpage.js": "~2.2.1",
+    "bootstrap-autohidingnavbar": "~1.0.0"
   }
 }
