@@ -1,45 +1,19 @@
-var ractive = new Ractive({
+var ractive, wall;
+
+ractive = new Ractive({
   el: 'container',
-  template: '#foods-by-restaurant',
+  template: '#page-template',
   data: {
-    foodsByRestaurant : [
-      {
-        restaurantName: 'Assarin Ullakko',
-        foods: [
-          {
-            name: 'Makaronilaatikko',
-            diets: 'L G',
-            prices: ['2,60','4,90', '5,90']
-          },
-          {
-            name: 'Nakki ja Muusi',
-            diets: 'L G',
-            prices: ['2,60','4,90', '5,90']
-          }
-        ]
-      },
-      {
-        restaurantName: 'Delica',
-        foods: [
-          {
-            name: 'Bistro: Riistapy\u00f6ryk\u00e4t, perunamuhennos, puolukkahillo sis. kahvi ja j\u00e4lkiruoka *',
-            diets: 'L G',
-            prices: ['2,60','4,90', '5,90']
-          },
-          {
-            name: 'Nakki ja Muusi',
-            diets: 'L G',
-            prices: ['2,60','4,90', '5,90']
-          }
-        ]
-      }
-    ],
+    foodsByRestaurant : [],
+    loadingFoods: false,
     formatPrices: formatPrices
   }
 });
 
 $(function() {
-    var wall = new freewall("#container");
+    getFoods();
+
+    wall = new freewall("#container");
 
     wall.reset({
         selector: '.item',
@@ -54,4 +28,15 @@ $(function() {
 
 function formatPrices(prices) {
   return prices.join(' / ');
+}
+
+function getFoods() {
+  ractive.set('loadingFoods', true);
+  $.ajax({
+        url: "2014_w18_unica.json",
+    }).then(function(data) {
+       ractive.set('foodsByRestaurant', data.foodsByDay[0].foodsByRestaurant);
+       ractive.set('loadingFoods', false);
+       wall.refresh();
+    });
 }
