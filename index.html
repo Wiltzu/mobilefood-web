@@ -187,6 +187,30 @@
             </div>
           </div>
         </div>
+
+        <script id='food-by-restaurant' type='text/ractive'>
+            {{#each foodsByRestaurant}}
+                <div class="item">
+                    <div class="container-fluid">
+                        <h3>{{name}}</h2>
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <td>Makaronilaatikko ja puolukkahillo</td>
+                                    <td>L G</td>
+                                    <td>2,60 / 4,90 / 5,90</td>
+                                </tr>
+                                <tr>
+                                    <td>Muusi ja nakit</td>
+                                    <td>G L</td>
+                                    <td>2,60 / 4,90 / 5,90</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            {{/each}}
+        </script>
         <script src="./public/assets/javascript/app.js"></script>
 	</body>
 </html>

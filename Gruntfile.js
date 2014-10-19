@@ -14,6 +14,7 @@ module.exports = function(grunt) {
              './bower_components/jquery/dist/jquery.js',
              './bower_components/bootstrap/dist/js/bootstrap.js',
              "./bower_components/freewall/freewall.js",
+             "./bower_components/ractive/ractive.js",
              './app/assets/javascript/app.js'
            ],
            dest: './public/assets/javascript/app.js',
