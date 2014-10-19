@@ -4,7 +4,7 @@ var ractive = new Ractive({
   data: {
     foodsByRestaurant : [
       {
-        name: 'Assarin Ullakko',
+        restaurantName: 'Assarin Ullakko',
         foods: [
           {
             name: 'Makaronilaatikko',
@@ -19,10 +19,10 @@ var ractive = new Ractive({
         ]
       },
       {
-        name: 'Delica',
+        restaurantName: 'Delica',
         foods: [
           {
-            name: 'Makaronilaatikko',
+            name: 'Bistro: Riistapy\u00f6ryk\u00e4t, perunamuhennos, puolukkahillo sis. kahvi ja j\u00e4lkiruoka *',
             diets: 'L G',
             prices: '2,60 / 4,90 / 5,90'
           },

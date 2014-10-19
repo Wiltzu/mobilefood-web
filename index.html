@@ -25,7 +25,7 @@
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
                         <li><a href="#">Home</a></li>
-                        <li><a href="about.html">About</a></li>
+                        <li><a href="#about">About</a></li>
                     </ul>
                 </div>
             </div>
@@ -39,19 +39,16 @@
             {{#each foodsByRestaurant}}
                 <div class="item">
                     <div class="container-fluid">
-                        <h3>{{name}}</h2>
+                        <h3>{{restaurantName}}</h2>
                         <table class="table">
                             <tbody>
-                                <tr>
-                                    <td>Makaronilaatikko ja puolukkahillo</td>
-                                    <td>L G</td>
-                                    <td>2,60 / 4,90 / 5,90</td>
-                                </tr>
-                                <tr>
-                                    <td>Muusi ja nakit</td>
-                                    <td>G L</td>
-                                    <td>2,60 / 4,90 / 5,90</td>
-                                </tr>
+                                {{#each foods}}
+                                    <tr>
+                                        <td>{{name}}</td>
+                                        <td>{{diets}}</td>
+                                        <td>{{prices}}</td>
+                                    </tr>
+                                {{/each}}
                             </tbody>
                         </table>
                     </div>
