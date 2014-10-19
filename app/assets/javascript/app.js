@@ -9,12 +9,12 @@ var ractive = new Ractive({
           {
             name: 'Makaronilaatikko',
             diets: 'L G',
-            prices: '2,60 / 4,90 / 5,90'
+            prices: ['2,60','4,90', '5,90']
           },
           {
             name: 'Nakki ja Muusi',
             diets: 'L G',
-            prices: '2,60 / 4,90 / 5,90'
+            prices: ['2,60','4,90', '5,90']
           }
         ]
       },
@@ -24,16 +24,17 @@ var ractive = new Ractive({
           {
             name: 'Bistro: Riistapy\u00f6ryk\u00e4t, perunamuhennos, puolukkahillo sis. kahvi ja j\u00e4lkiruoka *',
             diets: 'L G',
-            prices: '2,60 / 4,90 / 5,90'
+            prices: ['2,60','4,90', '5,90']
           },
           {
             name: 'Nakki ja Muusi',
             diets: 'L G',
-            prices: '2,60 / 4,90 / 5,90'
+            prices: ['2,60','4,90', '5,90']
           }
         ]
       }
-    ]
+    ],
+    formatPrices: formatPrices
   }
 });
 
@@ -50,3 +51,7 @@ $(function() {
 
     wall.fitWidth();
 });
+
+function formatPrices(prices) {
+  return prices.join(' / ');
+}
