@@ -1,7 +1,7 @@
 var ractive, wall;
 
 ractive = new Ractive({
-  el: 'container',
+  el: 'food-container',
   template: '#page-template',
   data: {
     foodsByRestaurant : [],
@@ -13,7 +13,7 @@ ractive = new Ractive({
 $(function() {
     getFoods();
 
-    wall = new freewall("#container");
+    wall = new freewall("#food-container");
 
     wall.reset({
         selector: '.item',

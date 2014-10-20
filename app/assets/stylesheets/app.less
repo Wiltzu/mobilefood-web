@@ -4,31 +4,43 @@ body {
   padding-top: 70px;
 }
 
-.item {
-	background: white;
-	box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.33);
-	border-radius: 3px;
-	color: #333;
-	border: none;
+#food-container {
 	width: 100%;
-	min-height: 150px;
+	margin: 0;
+	
+	.item {
+		background: white;
+		box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.33);
+		border-radius: 3px;
+		color: #333;
+		border: none;
+		width: 100%;
+		min-height: 150px;
+	}
 }
 
+//TODO: figure more efficient way
 tbody > tr:first-child {
 	border-top: 2px solid #ccc;
 }
 
-#container {
-	width: 100%;
-	margin: 0;
-}
-.day-navigation {
-	.center-block();	
-}
 
-.weekday {
-	display: inline-block;
+.day-navigation {
 	text-align: center;
+	
+	.nav-back {
+		float: left !important;
+	}
+
+	.nav-forward {
+		float: right !important;
+	}
+
+	.weekday {
+		display: inline-block;
+		text-align: center;
+		color: #fff;
+	}
 }
 
 .hidden-small {
@@ -36,16 +48,36 @@ tbody > tr:first-child {
 }
 
 @media (min-width: 380px) {
+
 	.hidden-small {
 		display: inherit;
 	}
 
-	.item {
-		max-width: 380px;
-	}
-
-	#container {
+	#food-container {
 	   width: 95%;
 	   margin: auto;
+
+	   .item {
+			max-width: 380px;
+		}
+	}
+}
+
+@media (min-width: @screen-sm) {
+
+	.day-navigation {
+	
+		.nav-back {
+			float: initial !important;
+		}
+
+		.nav-forward {
+			float: initial !important;
+		}
+
+		.weekday {
+			margin-left: 5px;
+			margin-right: 5px;
+		}
 	}
 }
