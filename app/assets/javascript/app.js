@@ -1,19 +1,38 @@
-var ractive, wall;
+var weekdays = ['Maanantai', 'Tiistai', 'Keskiviikko', 'Torstai', 'Perjantai', 'Lauantai', 'Sunnuntai'];
+var today = new Date();
+var selectedDay = today;
+var selectedWeekDay = getCurrentWeekDay(selectedDay);
 
-ractive = new Ractive({
-  el: 'food-container',
-  template: '#page-template',
-  data: {
-    foodsByRestaurant : [],
-    loadingFoods: false,
-    formatPrices: formatPrices
-  }
-});
+function getCurrentWeekDay(date) {
+  var dayStartingSunday = date.getDay();
+  return dayStartingSunday < 6 ? dayStartingSunday - 1 : 0;
+};
+
+var ractive, wall;
+initRactive();
+
 
 $(function() {
-    getFoods();
 
-    wall = new freewall("#food-container");
+    getFoods(selectedWeekDay);
+
+    initWall();
+});
+
+function initRactive() {
+  ractive = new Ractive({
+      el: 'food-container',
+      template: '#page-template',
+      data: {
+        foodsByRestaurant : [],
+        loadingFoods: false,
+        formatPrices: formatPrices
+      }
+    });
+}
+
+function initWall() {
+  wall = new freewall("#food-container");
 
     wall.reset({
         selector: '.item',
@@ -24,18 +43,20 @@ $(function() {
     });
 
     wall.fitWidth();
-});
+}
 
 function formatPrices(prices) {
   return prices.join(' / ');
 }
 
-function getFoods() {
+function getFoods(weekday) {
   ractive.set('loadingFoods', true);
+  
   $.ajax({
-        url: "2014_w18_unica.json",
-    }).then(function(data) {
-       ractive.set('foodsByRestaurant', data.foodsByDay[0].foodsByRestaurant);
+        url: "2014_w18_unica.json"
+    
+    }).then(function(data) {   
+       ractive.set('foodsByRestaurant', data.foodsByDay[weekday].foodsByRestaurant);
        ractive.set('loadingFoods', false);
        wall.refresh();
     });

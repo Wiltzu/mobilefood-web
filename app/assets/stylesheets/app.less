@@ -4,9 +4,20 @@ body {
   padding-top: 70px;
 }
 
+//zero container-fluid padding in
+.main-content {
+	padding-left: 0;
+	padding-right: 0;
+}
+
 #food-container {
 	width: 100%;
 	margin: 0;
+
+	.progress {
+		border-radius: 0;
+		margin-top: -19px;
+	}
 	
 	.item {
 		background: white;
@@ -21,7 +32,7 @@ body {
 
 //TODO: figure more efficient way
 tbody > tr:first-child {
-	border-top: 2px solid #ccc;
+	border-top: 2px solid #4ECDC4;
 }
 
 
@@ -58,7 +69,7 @@ tbody > tr:first-child {
 	   margin: auto;
 
 	   .item {
-			max-width: 380px;
+			max-width: 400px;
 		}
 	}
 }
