@@ -16,7 +16,7 @@ function initViewModels() {
         selectedDay: selectedDay,
         selectedWeekDay: selectedWeekDay,
         selectedWeekDayName: selectedWeekDayName,
-        formatDate: formatDate    
+        formatDate: formatDate
       }
     });
 
@@ -100,11 +100,11 @@ function initWall() {
 
 function showFoodsFor(weekday) {
   foodView.set('loadingFoods', true);
-  
-  $.ajax({
-    url: '2014_w18_unica.json'   
 
-  }).then(function(data) {   
+  $.ajax({
+    url: '2014_w18_unica.json'
+
+  }).then(function(data) {
       foodView.set('foodsByRestaurant', data.foodsByDay[weekday].foodsByRestaurant);
       foodView.set('loadingFoods', false);
       wall.refresh();
