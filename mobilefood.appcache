@@ -1,13 +1,12 @@
 CACHE MANIFEST
-# 2014-10-23:v3
+# 2014-10-23:v8
 
 # Explicitly cached 'master entries'.
 CACHE:
 index.html
 public/assets/javascript/app.js
 public/assets/stylesheets/app.css
-bower_components/bootstrap/fonts/glyphicons-haflings-regular.woff
-/2014_w18_unica.json
+#/2014_w18_unica.json
 
 # Resources that require the user to be online.
 NETWORK:

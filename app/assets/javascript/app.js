@@ -104,9 +104,12 @@ function showFoodsFor(weekday) {
   $.ajax({
     url: '2014_w18_unica.json'
 
-  }).then(function(data) {
+  }).done(function(data) {
       foodView.set('foodsByRestaurant', data.foodsByDay[weekday].foodsByRestaurant);
       foodView.set('loadingFoods', false);
       wall.refresh();
+  }).fail(function(jqXHR, textStatus) {
+      foodView.set('foodsByRestaurant', []);
+      foodView.set('loadingFoods', false);
   });
 }
