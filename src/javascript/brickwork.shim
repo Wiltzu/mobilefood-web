@@ -1,0 +1,5 @@
+var jquery = require('jQuery')
+window.jQuery = jquery;
+require("../../node_modules/brickwork/brickwork.js");
+
+module.exports = window.brickwork;

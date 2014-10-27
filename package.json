@@ -1,28 +1,60 @@
 {
   "name": "mobilefood-web",
-  "version": "1.0.0",
-  "description": "",
-  "main": "Gruntfile.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start":"ws"
-  },
+  "version": "0.1.0",
+  "description": "Displays student restaurant foods in Turku.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Wiltzu/mobilefood-web.git"
+    "url": "git://github.com/wiltzu/mobilefood-web.git"
   },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Wiltzu/mobilefood-web/issues"
+  "browser": {
+    "brickwork": "./node_modules/brickwork/brickwork.js",
+    "brickwork-centering": "./node_modules/brickwork/src/plugins/centering.js",
+    "bootstrap": "./node_modules/bootstrap/dist/js/bootstrap.js"
   },
-  "homepage": "https://github.com/Wiltzu/mobilefood-web",
+  "browserify": {
+    "transform": [
+      "browserify-shim",
+      "ractivate"
+    ]
+  },
+  "browserify-shim": {
+    "brickwork": "brickwork",
+    "brickwork-centering": "brickwork-centering",
+    "bootstrap": "bootstrap"
+  },
+  "aliasify": {
+    "aliases": {
+      "ractive": "ractive/build/ractive.runtime"
+    }
+  },
   "devDependencies": {
-    "grunt": "^0.4.5",
-    "grunt-contrib-concat": "^0.5.0",
-    "grunt-contrib-less": "^0.11.4",
-    "grunt-contrib-uglify": "^0.6.0",
-    "grunt-contrib-watch": "^0.6.1",
-    "local-web-server": "^0.5.15"
+    "aliasify": "^1.4.0",
+    "browser-sync": "~0.8.2",
+    "browserify": "~3.36.0",
+    "browserify-shim": "~3.4.1",
+    "connect": "~2.14.3",
+    "gulp": "~3.8.5",
+    "gulp-changed": "~0.3.0",
+    "gulp-compass": "~1.1.8",
+    "gulp-imagemin": "~0.1.5",
+    "gulp-notify": "~1.2.4",
+    "gulp-open": "~0.2.8",
+    "gulp-util": "~2.2.14",
+    "pretty-hrtime": "~0.2.1",
+    "ractivate": "^0.2.0",
+    "vinyl-source-stream": "~0.1.1",
+    "watchify": "~0.10.1",
+    "gulp-uglify": "~1.0.1",
+    "gulp-buffer": "0.0.2",
+    "vinyl-buffer": "~1.0.0",
+    "gulp-less": "~1.3.6"
+  },
+  "dependencies": {
+    "jquery": "~2.1.0",
+    "ractive": "^0.6.0",
+    "brickwork": "~1.0.0",
+    "hammerjs": "~2.0.4",
+    "ractive-touch": "~0.4.0",
+    "bootstrap": "~3.2.0"
   }
 }
