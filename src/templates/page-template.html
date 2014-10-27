@@ -14,28 +14,39 @@
 <!--{{/loading}} -->
 
 <!--{{>foodsbyrestaurant}} -->
-   {{#each foodsByRestaurant}}
+   {{#each foodsByRestaurant:index}}
         <div class="item">
             <div class="container-fluid">
                 <div>
-                    <span class="glyphicon glyphicon-info-sign pull-right rest-info" on-click="showRestaurantInfoClicked:{{restaurantName}}"></span>
+                    <span class="glyphicon glyphicon-info-sign pull-right rest-info" on-tap="showRestaurantInfoClicked:{{restaurantName}},{{index}}"></span>
                     <h3>{{restaurantName}}</h3>
                 </div>
+                
                 {{#if alert}}
-                <div class="alert alert-danger" role="alert">{{alert}}</div>
+                    <div class="alert alert-danger" role="alert">{{alert}}</div>
                 {{/if}}
-                <table class="table">
-                    <tbody>
-                        {{#each lunches}}
-                            <tr>
-                                <td>{{name}}</td>
-                                <td>{{diets}}</td>
-                                <td>{{ formatPrices(prices) }}</td>
-                            </tr>
-                        {{/each}}
-                    </tbody>
-                </table>
+
+                {{#if isInfoShown}}
+                    <ul>
+                        <li>{{restaurantInfo.address}}</li>
+                        <li>{{restaurantInfo.lunchTimes}}</li>
+                    </ul>
+                {{else}}
+                    <table class="table">
+                        <tbody>
+                            {{#each lunches}}
+                                <tr>
+                                    <td>{{name}}</td>
+                                    <td>{{diets}}</td>
+                                    <td>{{ formatPrices(prices) }}</td>
+                                </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                {{/if}}
+
             </div>
         </div>
     {{/each}}
+<!--{{/foodsbyrestaurant}} -->
 <!--{{/foodsbyrestaurant}} -->

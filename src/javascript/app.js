@@ -4,6 +4,7 @@ var RactiveTouch = require('ractive-touch');
 var $ = require('jQuery');
 var brickwork = require('./brickwork.shim');
 var bootstrap = require('bootstrap');
+var _ = require('lodash');
 
 $(function() {
   initViewModels();
@@ -77,8 +78,8 @@ function initViewModels() {
   });
 
   foodView.on({
-    'showRestaurantInfoClicked': function( event, restaurantName) {
-      alert(restaurantName);
+    'showRestaurantInfoClicked': function( event, restaurantName, index) {
+      alert(restaurantName + " " + index);
     },
     'navigatePreviousDay': navigatePreviousDay,
     'navigateNextDay': navigateNextDay
