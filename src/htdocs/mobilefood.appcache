@@ -1,14 +1,13 @@
 CACHE MANIFEST
-# 2014-10-27:v6
+# 2014-10-31:v9
 
 # Explicitly cached 'master entries'.
 CACHE:
 index.html
-BUNDLE.js
+bundle.js
 app.css
 glyphicons-halflings-regular.woff
 glyphicons-halflings-regular.ttf
-#/2014_w18_unica.json
 
 # Resources that require the user to be online.
 NETWORK:

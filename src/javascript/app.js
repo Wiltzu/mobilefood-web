@@ -5,13 +5,12 @@ var $ = require('jQuery');
 var brickwork = require('./brickwork.shim');
 var bootstrap = require('bootstrap');
 var _ = require('lodash');
+var CONFIG = require('../config/config.json');
 
 $(function() {
   initViewModels();
-
-  showFoodsFor(selectedWeekDay);
-
   initWall();
+  showFoodsFor(selectedWeekDay);
 });
 
 var WEEK_DAY_NAMES = ['Maanantai', 'Tiistai', 'Keskiviikko', 'Torstai', 'Perjantai', 'Lauantai', 'Sunnuntai'];
@@ -119,26 +118,42 @@ function initWall() {
   wall.fitWidth();
 }
 
-
 function showFoodsFor(weekday) {
   foodView.set('loadingFoods', true);
 
-  $.ajax({
-    url: '2014_w18_unica.json'
+  if(localStorage && weekday in localStorage) {
+    foodView.set('foodsByRestaurant', JSON.parse(localStorage[weekday]));
+    foodView.set('loadingFoods', false);
+    wall.refresh();
+  
+  } else {
+    $.ajax({
+      //crossDomain: true,
+      dataType: "jsonp",
+      url: getRestServiceUrlFor()
 
-    }).done(function(data) {
-      if(data.foodsByDay[weekday]) {
-        foodView.set('foodsByRestaurant', data.foodsByDay[weekday].foodsByRestaurant);
-      } else {
-        foodView.set('foodsByRestaurant', []);
-      }
+      }).done(function(data) {
+        if(data.foodsByDay[weekday]) {
+          foodView.set('foodsByRestaurant', data.foodsByDay[weekday].foodsByRestaurant);
+          if(localStorage) {
+            localStorage.setItem(weekday, JSON.stringify(data.foodsByDay[weekday].foodsByRestaurant));
+          }
+        } else {
+          foodView.set('foodsByRestaurant', []);
+        }
 
-    }).fail(function(jqXHR, textStatus) {
-      foodView.set('foodsByRestaurant', []);      
-    
-    }).always(function() {
-      foodView.set('loadingFoods', false);
-      wall.refresh();
-  });
+      }).fail(function(jqXHR, textStatus) {
+        foodView.set('foodsByRestaurant', []);      
+      
+      }).always(function() {
+        foodView.set('loadingFoods', false);
+        wall.refresh();
+    });
+  }
+
+}
+
+function getRestServiceUrlFor() {
+  return CONFIG.REST_URL + "?restaurant=unica&year=2014&week=44"
 }
 

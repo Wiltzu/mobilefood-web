@@ -1,0 +1,5 @@
+{
+	"REST_URL": "http://192.168.11.2:4730/mobilerest/"
+	//"REST_URL": "http://localhost:4730/mobilerest/"
+	//"REST_URL": "2014_w18_unica.json"
+}
