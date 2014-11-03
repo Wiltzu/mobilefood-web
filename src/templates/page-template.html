@@ -27,9 +27,18 @@
                 {{/if}}
 
                 {{#if isInfoShown}}
-                    <ul>
-                        <li>{{restaurantInfo.address}}</li>
-                        <li>{{restaurantInfo.lunchTimes}}</li>
+                    <ul class="list-unstyled">
+                        <li>
+                            <address>
+                                {{restaurantInfo.address}}<br>
+                                {{restaurantInfo.zip}} {{restaurantInfo.postOffice}}
+                            </address>
+                        </li>
+                        <li>
+                            {{#each restaurantInfo.lunchTimes}}
+                                {{weekDays}}: {{hours}}<br>
+                            {{/each}}
+                        </li>
                     </ul>
                 {{else}}
                     <table class="table">

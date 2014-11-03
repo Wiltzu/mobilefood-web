@@ -78,11 +78,47 @@ function initViewModels() {
 
   foodView.on({
     'showRestaurantInfoClicked': function( event, restaurantName, index) {
-      alert(restaurantName + " " + index);
+      showRestaurantInfo(restaurantName, index);
     },
     'navigatePreviousDay': navigatePreviousDay,
     'navigateNextDay': navigateNextDay
   });
+}
+
+function showRestaurantInfo(restaurantName, index) {
+  var isInfoSet = foodView.get('foodsByRestaurant[' + index + '].restaurantInfo') !== undefined;
+  var isInfoShown = foodView.get('foodsByRestaurant[' + index +'].isInfoShown');
+
+  if(!isInfoShown) {
+    if(!isInfoSet) {
+      $.ajax({
+          //crossDomain: true,
+          dataType: "jsonp",
+          url: getRestServiceUrlFor()
+
+          }).done(function(data) {
+            if(data.restaurants) {
+              var restaurantInfos = data.restaurants;
+              foodView.set('foodsByRestaurant[' + index + '].restaurantInfo', restaurantInfos[index]);
+            }
+
+          }).fail(function(jqXHR, textStatus) {
+            //     
+          
+          }).always(function() {
+            setRestaurantInfoVisible(index, true);
+        });
+    } else {
+      setRestaurantInfoVisible(index, true);
+    }
+  } else {
+    setRestaurantInfoVisible(index, false);
+  }
+}
+
+function setRestaurantInfoVisible(index, isVisible) {
+  foodView.set('foodsByRestaurant[' + index +'].isInfoShown', isVisible);
+  wall.refresh();
 }
 
 function formatDate(date) {
@@ -110,8 +146,7 @@ function initWall() {
       selector: '.item',
       cellH: 'auto',
       onResize: function() {
-          wall.fitWidth();
-          //wall.refresh();
+          wall.refresh();
       }
   });
 
