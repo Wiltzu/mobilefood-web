@@ -3,57 +3,60 @@ var RactiveTouch = require('ractive-touch');
 var $ = require('jQuery');
 var brickwork = require('./brickwork.shim');
 var bootstrap = require('bootstrap');
-var _ = require('lodash');
 var CONFIG = require('../config/config.json');
 var PageSlider = require('./pageslider.js');
+var FoodService = require('./foodservice.js');
+var dateUtil = require('./dateutil.js');
 
 $(function() {
   initViewModels();
   initWall();
-  showFoodsFor(selectedWeekDay);
+  initFoodService();
+  showFoodsFor(today);
 });
 
 var WEEK_DAY_NAMES = ['Maanantai', 'Tiistai', 'Keskiviikko', 'Torstai', 'Perjantai', 'Lauantai', 'Sunnuntai'];
-var today, selectedDay, selectedWeekDay, selectedWeekDayName;
-var foodView, navigationView, wall, slider;
+var today, selectedDay, selectedWeekDayName;
+var dailyFoodView, navigationView, wall, slider, foodService;
+
+function initFoodService() {
+  foodService = new FoodService(CONFIG);
+}
 
 function initViewModels() {
   today = new Date();
   selectedDay = new Date(today.getTime());
-  selectedWeekDay = getWeekDayNumber(selectedDay);
-  selectedWeekDayName = WEEK_DAY_NAMES[selectedWeekDay];
+  selectedWeekDayName = WEEK_DAY_NAMES[dateUtil.getWeekDayNumber(today)];
   var $mainContent = $('#main-content');
   slider = new PageSlider($('body'));
 
   function navigatePreviousDay() {
-    var previousDay = foodView.get('selectedDay');
+    var previousDay = dailyFoodView.get('selectedDay');
     previousDay.setDate(previousDay.getDate()-1);
 
-    foodView.set({
+    dailyFoodView.set({
       selectedDay: previousDay,
-      selectedWeekDay: getWeekDayNumber(previousDay),
-      selectedWeekDayName: WEEK_DAY_NAMES[getWeekDayNumber(previousDay)]
+      selectedWeekDayName: WEEK_DAY_NAMES[dateUtil.getWeekDayNumber(previousDay)]
     });
 
     slider.slidePageFrom($mainContent, "right");
-    showFoodsFor(getWeekDayNumber(previousDay));
+    showFoodsFor(previousDay);
   }
 
   function navigateNextDay() {
-    var nextDay = foodView.get('selectedDay');
+    var nextDay = dailyFoodView.get('selectedDay');
     nextDay.setDate(nextDay.getDate()+1);
 
-    foodView.set({
+    dailyFoodView.set({
       selectedDay: nextDay,
-      selectedWeekDay: getWeekDayNumber(nextDay),
-      selectedWeekDayName: WEEK_DAY_NAMES[getWeekDayNumber(nextDay)]
+      selectedWeekDayName: WEEK_DAY_NAMES[dateUtil.getWeekDayNumber(nextDay)]
     });
 
-    showFoodsFor(getWeekDayNumber(nextDay));
+    showFoodsFor(nextDay);
     slider.slidePageFrom($mainContent,"left");
   }
 
-  foodView = new Ractive({
+  dailyFoodView = new Ractive({
     el: 'body',
     template: require('../templates/page-template.html'),
     data: {
@@ -61,14 +64,13 @@ function initViewModels() {
       loadingFoods: false,
       today : today,
       selectedDay: selectedDay,
-      selectedWeekDay: selectedWeekDay,
       selectedWeekDayName: selectedWeekDayName,
       formatDate: formatDate,
       formatPrices: formatPrices
     }
   });
 
-  foodView.on({
+  dailyFoodView.on({
     showRestaurantInfoClicked: function( event, restaurantName, index) {
       showRestaurantInfo(restaurantName, index);
     },
@@ -78,8 +80,8 @@ function initViewModels() {
 }
 
 function showRestaurantInfo(restaurantName, index) {
-  var isInfoSet = foodView.get('foodsByRestaurant[' + index + '].restaurantInfo') !== undefined;
-  var isInfoShown = foodView.get('foodsByRestaurant[' + index +'].isInfoShown');
+  var isInfoSet = dailyFoodView.get('foodsByRestaurant[' + index + '].restaurantInfo') !== undefined;
+  var isInfoShown = dailyFoodView.get('foodsByRestaurant[' + index +'].isInfoShown');
 
   if(!isInfoShown) {
     if(!isInfoSet) {
@@ -91,7 +93,7 @@ function showRestaurantInfo(restaurantName, index) {
           }).done(function(data) {
             if(data.restaurants) {
               var restaurantInfos = data.restaurants;
-              foodView.set('foodsByRestaurant[' + index + '].restaurantInfo', restaurantInfos[index]);
+              dailyFoodView.set('foodsByRestaurant[' + index + '].restaurantInfo', restaurantInfos[index]);
             }
 
           }).fail(function(jqXHR, textStatus) {
@@ -109,7 +111,7 @@ function showRestaurantInfo(restaurantName, index) {
 }
 
 function setRestaurantInfoVisible(index, isVisible) {
-  foodView.set('foodsByRestaurant[' + index +'].isInfoShown', isVisible);
+  dailyFoodView.set('foodsByRestaurant[' + index +'].isInfoShown', isVisible);
   wall.refresh();
 }
 
@@ -120,11 +122,6 @@ function formatDate(date) {
   var year = date.getFullYear();
   return day + "." + month + "." + year;
 }
-
-function getWeekDayNumber(date) {
-  var dayStartingSunday = date.getDay();
-  return dayStartingSunday == 0 ? 6 : dayStartingSunday - 1;
-};
 
 function formatPrices(prices) {
   return prices.join(' / ');
@@ -145,38 +142,52 @@ function initWall() {
   wall.fitWidth();
 }
 
-function showFoodsFor(weekday) {
-  foodView.set('loadingFoods', true);
+function showFoodsFor(date) {
+  dailyFoodView.set('loadingFoods', true);
+  var year = date.getFullYear(), 
+      week = dateUtil.getWeek(date), 
+      weekday = dateUtil.getWeekDayNumber(date);
 
-  if(localStorage && weekday in localStorage) {
-    foodView.set('foodsByRestaurant', JSON.parse(localStorage[weekday]));
-    foodView.set('loadingFoods', false);
+  foodService.getFoodsFor(year, week, weekday, function(foods, error) {
+    if(!error) {
+      dailyFoodView.set('foodsByRestaurant', foods);
+    } else {
+      dailyFoodView.set('foodsByRestaurant', []); 
+    }
+    
+    dailyFoodView.set('loadingFoods', false);
     wall.refresh();
+  });
+
+  // if(localStorage && weekday in localStorage) {
+  //   dailyFoodView.set('foodsByRestaurant', JSON.parse(localStorage[weekday]));
+  //   dailyFoodView.set('loadingFoods', false);
+  //   wall.refresh();
   
-  } else {
-    $.ajax({
-      crossDomain: true,
-      dataType: "jsonp",
-      url: getRestServiceUrlFor()
+  // } else {
+  //   $.ajax({
+  //     crossDomain: true,
+  //     dataType: "jsonp",
+  //     url: getRestServiceUrlFor()
 
-      }).done(function(data) {
-        if(data.foodsByDay[weekday]) {
-          foodView.set('foodsByRestaurant', data.foodsByDay[weekday].foodsByRestaurant);
-          if(localStorage) {
-            localStorage.setItem(weekday, JSON.stringify(data.foodsByDay[weekday].foodsByRestaurant));
-          }
-        } else {
-          foodView.set('foodsByRestaurant', []);
-        }
+  //     }).done(function(data) {
+  //       if(data.foodsByDay[weekday]) {
+  //         dailyFoodView.set('foodsByRestaurant', data.foodsByDay[weekday].foodsByRestaurant);
+  //         if(localStorage) {
+  //           localStorage.setItem(weekday, JSON.stringify(data.foodsByDay[weekday].foodsByRestaurant));
+  //         }
+  //       } else {
+  //         dailyFoodView.set('foodsByRestaurant', []);
+  //       }
 
-      }).fail(function(jqXHR, textStatus) {
-        foodView.set('foodsByRestaurant', []);      
+  //     }).fail(function(jqXHR, textStatus) {
+  //       dailyFoodView.set('foodsByRestaurant', []);      
       
-      }).always(function() {
-        foodView.set('loadingFoods', false);
-        wall.refresh();
-    });
-  }
+  //     }).always(function() {
+  //       dailyFoodView.set('loadingFoods', false);
+  //       wall.refresh();
+  //   });
+  // }
 
 }
 

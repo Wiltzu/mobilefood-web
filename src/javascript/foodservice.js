@@ -3,13 +3,19 @@ var $ = require('jQuery');
 
 function FoodService(config) {
   var CONFIG = config;
-  var hasLocalStorage = localStorage !== undefined;
+  var hasLocalStorage = window.localStorage !== undefined;
   
+  /*
+  * @param {Function} callback like function(data, error)
+  */
   this.getRestaurantInfo = function (index, callback) {
     $.ajax({dataType: "jsonp",
-            url: getRestServiceUrlFor(CONFIG),
+            url: getRestServiceUrlFor(2014, 45),
             success: function(data) { 
-              callback(parseRestaurant(data, index)); 
+              callback(parseRestaurant(data, index), null); 
+            },
+            error: function() {
+              callback(null, "error");
             }
     });
   }
@@ -21,15 +27,21 @@ function FoodService(config) {
     return {};
   }
 
-  function getRestServiceUrlFor(CONFIG) {
-    return CONFIG.REST_URL + "?restaurant=unica&year=2014&week=45";
+  function getRestServiceUrlFor(year, week) {
+    return CONFIG.REST_URL + "?restaurant=unica&year=" + year + "&week=" + week;
   }
 
+  /*
+  * @param {Function} callback like function(data, error).
+  */
   this.getFoodsFor = function (year, week, weekday, callback) {
     $.ajax({dataType: "jsonp",
-            url: getRestServiceUrlFor(CONFIG),
+            url: getRestServiceUrlFor(year, week),
             success: function(data) { 
-              callback(parseFoodForADay(data, weekday)); 
+              callback(parseFoodForADay(data, weekday), null); 
+            },
+            error: function() {
+              callback(null, "error");
             }
     });
   }

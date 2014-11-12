@@ -39,8 +39,11 @@ gulp.task('browserify', function() {
 			// stream gulp compatible. Specifiy the
 			// desired output filename here.
 			.pipe(source('bundle.js'))
-			.pipe(buffer()) // <----- convert from streaming to buffered vinyl file object
-    		.pipe(uglify()) // now gulp-uglify works 
+			
+			//Don't uglify
+			//.pipe(buffer()) // <----- convert from streaming to buffered vinyl file object
+    		//.pipe(uglify()) // now gulp-uglify works 
+			
 			// Specify the output destination
 			.pipe(gulp.dest('./build/'))
 			// Log when bundling completes!
