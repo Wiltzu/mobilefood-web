@@ -1,4 +1,3 @@
-
 var Ractive = require('ractive');
 var RactiveTouch = require('ractive-touch');
 var $ = require('jQuery');
@@ -6,6 +5,7 @@ var brickwork = require('./brickwork.shim');
 var bootstrap = require('bootstrap');
 var _ = require('lodash');
 var CONFIG = require('../config/config.json');
+var PageSlider = require('./pageslider.js');
 
 $(function() {
   initViewModels();
@@ -15,73 +15,65 @@ $(function() {
 
 var WEEK_DAY_NAMES = ['Maanantai', 'Tiistai', 'Keskiviikko', 'Torstai', 'Perjantai', 'Lauantai', 'Sunnuntai'];
 var today, selectedDay, selectedWeekDay, selectedWeekDayName;
-var foodView, navigationView, wall;
+var foodView, navigationView, wall, slider;
 
 function initViewModels() {
   today = new Date();
   selectedDay = new Date(today.getTime());
   selectedWeekDay = getWeekDayNumber(selectedDay);
   selectedWeekDayName = WEEK_DAY_NAMES[selectedWeekDay];
-
-  navigationView = new Ractive({
-      el: 'day-navigation',
-      template: require('../templates/navigation-template.html'),
-      data: {
-        today : today,
-        selectedDay: selectedDay,
-        selectedWeekDay: selectedWeekDay,
-        selectedWeekDayName: selectedWeekDayName,
-        formatDate: formatDate
-      }
-    });
+  var $mainContent = $('#main-content');
+  slider = new PageSlider($('body'));
 
   function navigatePreviousDay() {
-    var previousDay = navigationView.get('selectedDay');
+    var previousDay = foodView.get('selectedDay');
     previousDay.setDate(previousDay.getDate()-1);
 
-    navigationView.set({
+    foodView.set({
       selectedDay: previousDay,
       selectedWeekDay: getWeekDayNumber(previousDay),
       selectedWeekDayName: WEEK_DAY_NAMES[getWeekDayNumber(previousDay)]
     });
 
+    slider.slidePageFrom($mainContent, "right");
     showFoodsFor(getWeekDayNumber(previousDay));
   }
 
   function navigateNextDay() {
-    var nextDay = navigationView.get('selectedDay');
+    var nextDay = foodView.get('selectedDay');
     nextDay.setDate(nextDay.getDate()+1);
 
-    navigationView.set({
+    foodView.set({
       selectedDay: nextDay,
       selectedWeekDay: getWeekDayNumber(nextDay),
       selectedWeekDayName: WEEK_DAY_NAMES[getWeekDayNumber(nextDay)]
     });
 
     showFoodsFor(getWeekDayNumber(nextDay));
+    slider.slidePageFrom($mainContent,"left");
   }
 
-  navigationView.on({
-    navigatePreviousDay: navigatePreviousDay,
-    navigateNextDay: navigateNextDay
-  });
-
   foodView = new Ractive({
-    el: 'main-content',
+    el: 'body',
     template: require('../templates/page-template.html'),
     data: {
       foodsByRestaurant : [],
       loadingFoods: false,
+      today : today,
+      selectedDay: selectedDay,
+      selectedWeekDay: selectedWeekDay,
+      selectedWeekDayName: selectedWeekDayName,
+      formatDate: formatDate,
       formatPrices: formatPrices
     }
   });
 
   foodView.on({
-    'showRestaurantInfoClicked': function( event, restaurantName, index) {
+    showRestaurantInfoClicked: function( event, restaurantName, index) {
       showRestaurantInfo(restaurantName, index);
     },
-    'navigatePreviousDay': navigatePreviousDay,
-    'navigateNextDay': navigateNextDay
+    navigatePreviousDay: navigatePreviousDay,
+    navigateNextDay: navigateNextDay
   });
 }
 
@@ -163,7 +155,7 @@ function showFoodsFor(weekday) {
   
   } else {
     $.ajax({
-      //crossDomain: true,
+      crossDomain: true,
       dataType: "jsonp",
       url: getRestServiceUrlFor()
 
@@ -189,6 +181,6 @@ function showFoodsFor(weekday) {
 }
 
 function getRestServiceUrlFor() {
-  return CONFIG.REST_URL + "?restaurant=unica&year=2014&week=44"
+  return CONFIG.REST_URL + "?restaurant=unica&year=2014&week=45"
 }
 

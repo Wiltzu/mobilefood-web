@@ -1,10 +1,51 @@
-<div id="food-container" on-swipeleft="navigateNextDay" on-swiperight="navigatePreviousDay">
-    {{#if loadingFoods}}
-        {{>loading}}
-    {{else}}
-        {{>foodsbyrestaurant}}
-    {{/if}}
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a href="#" class="navbar-brand">Mobilefood</a>
+            <button type="button" class="navbar-toggle  collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <div id="day-navigation" class="container-fluid">
+                        {{>navigation}}
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div id="main-content" class="container-fluid">
+    <div class="scrollable" on-swipeleft="navigateNextDay" on-swiperight="navigatePreviousDay">
+        <div id="food-container">
+            {{#if loadingFoods}}
+                {{>loading}}
+            {{else}}
+                {{>foodsbyrestaurant}}
+            {{/if}}
+        </div>
+    </div>
 </div>
+
+<!--{{>navigation}}-->
+    <button class="btn btn-default nav-back" on-tap="navigatePreviousDay">
+        <span class="glyphicon glyphicon-chevron-left"></span>
+    </button>
+    <h4 id="weekday" class="center-block">
+        {{selectedWeekDayName}} 
+        <span class="hidden-small">{{ formatDate(selectedDay) }}</span>
+    </h4>
+    <button class="btn btn-default nav-forward" on-tap="navigateNextDay">
+        <span class="glyphicon glyphicon-chevron-right"></span>
+    </button>
+<!--{{/navigation}}-->
+
 
 <!--{{>loading}} -->
 	<div class="progress progress-striped active">
@@ -17,29 +58,31 @@
    {{#each foodsByRestaurant:index}}
         <div class="item">
             <div class="container-fluid">
-                <div>
+                <div class="restaurant-header">
                     <span class="glyphicon glyphicon-info-sign pull-right rest-info" on-tap="showRestaurantInfoClicked:{{restaurantName}},{{index}}"></span>
                     <h3>{{restaurantName}}</h3>
+                    {{#if alert}}
+                        <div class="alert alert-danger" role="alert">{{alert}}</div>
+                    {{/if}}
                 </div>
                 
-                {{#if alert}}
-                    <div class="alert alert-danger" role="alert">{{alert}}</div>
-                {{/if}}
 
                 {{#if isInfoShown}}
-                    <ul class="list-unstyled">
-                        <li>
+                    <dl class="restaurant-info dl-horizontal">
+                        <dt>Osoite</dt>
+                        <dd>
                             <address>
                                 {{restaurantInfo.address}}<br>
                                 {{restaurantInfo.zip}} {{restaurantInfo.postOffice}}
                             </address>
-                        </li>
-                        <li>
+                        </dd>
+                        <dt>Lounasajat</dt>
+                        <dd>
                             {{#each restaurantInfo.lunchTimes}}
                                 {{weekDays}}: {{hours}}<br>
                             {{/each}}
-                        </li>
-                    </ul>
+                        </dd>
+                    </dl>
                 {{else}}
                     <table class="table">
                         <tbody>
@@ -57,5 +100,4 @@
             </div>
         </div>
     {{/each}}
-<!--{{/foodsbyrestaurant}} -->
 <!--{{/foodsbyrestaurant}} -->
