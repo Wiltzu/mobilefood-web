@@ -112,7 +112,7 @@ function showRestaurantInfo(restaurantName, index) {
 
 function setRestaurantInfoVisible(index, isVisible) {
   dailyFoodView.set('foodsByRestaurant[' + index +'].isInfoShown', isVisible);
-  wall.refresh();
+  //wall.refresh();
 }
 
 function formatDate(date) {
@@ -131,11 +131,11 @@ function initWall() {
   wall = new brickwork("#food-container");
 
   wall.reset({
-      animate: true,
+      animate: false,
       selector: '.item',
       cellH: 'auto',
       onResize: function() {
-          wall.refresh();
+          wall.fitWidth();
       }
   });
 
