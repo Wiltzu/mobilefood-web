@@ -1,8 +1,7 @@
 var $ = require('jQuery');
 
 
-function FoodService(config) {
-  var CONFIG = config;
+function FoodService(CONFIG) {
   var hasLocalStorage = window.localStorage !== undefined;
   
   /*
